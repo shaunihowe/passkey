@@ -4,13 +4,10 @@
 #include <stdlib.h>
 #include <string.h>                     // output formatting
 
-char pin[32];
-char domain[128];
-char user[64];
+unsigned char pin[32];
+unsigned char domain[128];
+unsigned char user[64];
 int thisyear;
-
-static const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-static const char symbols[] = "!$%&*?#@";
 
 void passphrase_stretch256(unsigned char* passphrase);
 void key_generate4096(unsigned char* key, unsigned char* passphrase);
@@ -60,52 +57,41 @@ int main(int argc, char *argv[])
 
 void passphrase_stretch256(unsigned char* passphrase)
 {
-	int a,passlen;
+	int a,i,passlen;
 	unsigned char salt;
 	passlen = strlen(passphrase);
 	salt = 255;
 	for (a=0;a<256;a++)
 	{
-		if (a >= passlen)
-		{
-			passphrase[a] = (((passphrase[salt % 8] << 1) ^ (passphrase[salt % 4] >> 1)) ^ salt) + a;
-		}
-		salt ^= (((salt << 1) ^ (salt >> 1)) ^ passphrase[a]) + a;
+		i = a % passlen;
+		passphrase[a] = passphrase[i];
+		salt ^= passphrase[a] + a + i;
 	}
 	for (a=0;a<256;a++)
 	{
-		passphrase[a] ^= (((passphrase[salt % 32] << 1) ^ (passphrase[salt % 128] >> 1)) ^ salt) + a;
-		salt ^= (((salt << 1) ^ (salt >> 1)) ^ passphrase[a]) + a;
+		passphrase[a] ^= salt + a;
+		salt ^= passphrase[a] + a;
 	}
 	return;
 }
 
 void key_generate4096(unsigned char* key, unsigned char* passphrase)
 {
-	int a,i,offset,rounds;
+	int a;
 	unsigned char salt;
 	salt = 255;
 	for (a=0;a<512;a++)
 	{
-		key[a] = (passphrase[a % 256] ^ salt) + a;
-		salt ^= (((salt << 1) ^ (salt >> 1)) ^ key[a]) + a;
-	}
-	for (rounds=0;rounds<32;rounds++)
-	{
-		offset = (salt % 32);
-		key[offset] = passphrase[salt];
-		for (a=offset;a<2048;a++)
-		{
-			i = a % 512;
-			key[i]^= (((key[i] << 1) ^ (key[i] >> 1)) ^ salt) + a * i + rounds;
-			salt ^= (((salt << 1) ^ (salt >> 1)) ^ key[i]) + a + i * rounds;
-		}
+		key[a] = (passphrase[a % 256] ^ salt) + a + 5;
+		salt ^=  key[a] + a + 6;
 	}
     return;
 }
 
 void password_generate(unsigned char* pass, unsigned char* key, int length)
 {
+	static const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	static const char symbols[] = "!$%&*?#@";
 	int a, i;
 	pass[length] = 0;
 	i = (length + key[a]) % 128;
