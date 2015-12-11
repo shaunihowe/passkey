@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
-	domain[strlen(seed)-1] = 0;
+	seed[strlen(seed)-1] = 0;
 	printf("year    password            passphrase\n");
 	for (year=thisyear-5;year<=thisyear;year++)
 	{
