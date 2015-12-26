@@ -12,8 +12,9 @@ int main(int argc, char *argv[])
 	char seed[256];
 	char pass[64];
 	int year;
+	char useseed[256];
 	sprintf(seed, "(noseed)");
-	thisyear = 2015;
+	thisyear = 2016;
 
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
@@ -21,13 +22,13 @@ int main(int argc, char *argv[])
 	printf("year    password            passphrase\n");
 	for (year=thisyear-5;year<=thisyear;year++)
 	{
-		sprintf(seed, "%s%i", seed, year);
+		sprintf(useseed, "%s%i", seed, year);
 		
 		printf("%i",year);fflush(stdout);
 		
-		password_generate(pass, seed, 8);
+		password_generate(pass, useseed, 8);
 		printf("    %s",pass);fflush(stdout);
-		password_generate(pass, seed, 24);
+		password_generate(pass, useseed, 24);
 		printf("            %s\n",pass);
 	}
 	return 0;
@@ -63,7 +64,7 @@ void password_generate(char* pass, char* seed, int length)
 
 	// lastly, create password of desired length
 	pass[length] = 0;
-	i = (length + key[length]) % 8;
+	i = (length + key[length]) % 16;
 	for (a=0;a<length;a++)
 	{
 		if (key[i] % 16 == 0)
