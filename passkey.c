@@ -2,7 +2,8 @@
 #include <time.h>                       // for time stuff
 #include <stdio.h>                      // standard i/o library
 #include <stdlib.h>
-#include <string.h>                     // output formatting
+#include <string.h>                // output formatting
+#include <stdint.h>
 int thisyear;
 
 void password_generate(char* pass, char* seed, int length);
