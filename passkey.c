@@ -4,12 +4,12 @@
 #include <stdlib.h>
 #include <string.h>                // output formatting
 #include <stdint.h>
-int thisyear;
 
 void password_generate(char* pass, char* seed, int length);
 
 int main(int argc, char *argv[])
 {
+	int thisyear;
 	char seed[256];
 	char pass[64];
 	int year;
