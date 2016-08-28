@@ -1,11 +1,10 @@
-// header file includes
-#include <time.h>                       // for time stuff
-#include <stdio.h>                      // standard i/o library
+#include <time.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>                // output formatting
+#include <string.h>
 #include <stdint.h>
 
-void password_generate(char* pass, char* seed, int length);
+void password_generate(char *pass, const char *seed, const int length);
 
 int main(int argc, char *argv[])
 {
@@ -20,8 +19,8 @@ int main(int argc, char *argv[])
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
 	seed[strlen(seed)-1] = 0;
-	printf("year    password            passphrase\n");
-	for (year=thisyear-5;year<=thisyear;year++)
+	printf("year    password (8)        passphrase (24)\n");
+	for (year=thisyear;year>=thisyear-5;year--)
 	{
 		sprintf(useseed, "%s%i", seed, year);
 		
@@ -35,7 +34,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void password_generate(char* pass, char* seed, int length)
+void password_generate(char *pass, const char *seed, const int length)
 {
 	static const char alphanum[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	static const char symbols[] = "!$%&*?#@";
