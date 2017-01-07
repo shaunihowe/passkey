@@ -14,13 +14,13 @@ int main(int argc, char *argv[])
 	int year;
 	char useseed[256];
 	sprintf(seed, "(noseed)");
-	thisyear = 2016;
+	thisyear = 2017;
 
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
 	seed[strlen(seed)-1] = 0;
 	printf("year    password (8)        passphrase (24)\n");
-	for (year=thisyear;year>=thisyear-5;year--)
+	for (year=thisyear;year>=2015;year--)
 	{
 		sprintf(useseed, "%s%i", seed, year);
 		
