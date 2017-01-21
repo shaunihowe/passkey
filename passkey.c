@@ -8,13 +8,12 @@ void password_generate(char *pass, const char *seed, const int length);
 
 int main(int argc, char *argv[])
 {
-	int thisyear;
+	int thisyear = 2017;
 	char seed[256];
 	char pass[64];
 	int year;
 	char useseed[256];
 	sprintf(seed, "(noseed)");
-	thisyear = 2017;
 
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
@@ -58,7 +57,7 @@ void password_generate(char *pass, const char *seed, const int length)
 		for (a=0;a<256;a++)
 		{
 			key[a] ^= salt;
-			salt ^= (salt << 1) + key[a] + a + round;
+			salt ^= (salt << 1) + key[a] + a + round + length;
 		}
 	}
 
@@ -73,6 +72,16 @@ void password_generate(char *pass, const char *seed, const int length)
 			pass[a] = alphanum[key[i+1] % 64];
 		i=i+2;
 	}
-	pass[key[i] % length] = symbols[key[i+1] % 8];
+	// ensure an upper case letter
+	pass[ key[i] % 2     ] = alphanum[ key[i+1] % 26      ];
+	i=i+2;
+	// a lower case letter
+	pass[(key[i] % 2) + 2] = alphanum[(key[i+1] % 26) + 26];
+	i=i+2;
+	// a number
+	pass[(key[i] % 2) + 4] = alphanum[(key[i+1] % 10) + 52];
+	i=i+2;
+	// and finally a symbol
+	pass[(key[i] % 2) + 6] = symbols [ key[i+1] % 8       ];
 	return;
 }
