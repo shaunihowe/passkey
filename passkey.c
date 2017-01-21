@@ -41,7 +41,7 @@ void password_generate(char *pass, const char *seed, const int length)
 	uint8_t salt;
 	uint8_t key[256];
 	seedlen = strlen(seed);
-	salt = 255;
+	salt = 255 - seedlen;
 	
 	// 1st, stretch out seed to fill key[256]
 	for (a=0;a<256;a++)
