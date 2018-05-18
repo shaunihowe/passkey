@@ -9,12 +9,12 @@ int main(int argc, char *argv[])
 	char pass[64];
 	sprintf(seed, "(noseed)");
 
-	printf("enter seed: ");
-	if (!fgets(seed, 252, stdin)){return 0;}
-	seed[strlen(seed)-1] = 0;
-	printf("password (8)        passphrase (24)\n");
 	for (;;)
 	{
+		printf("enter seed: ");
+		if (!fgets(seed, 252, stdin)){return 0;}
+		seed[strlen(seed)-1] = 0;
+		printf("password (8)        passphrase (24)\n");
 		password_generate(pass, seed, 8);
 		printf("%s",pass);
 		password_generate(pass, seed, 24);
