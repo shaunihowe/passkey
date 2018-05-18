@@ -1,34 +1,25 @@
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
 
 void password_generate(char *pass, const char *seed, const int length);
 
 int main(int argc, char *argv[])
 {
-	int thisyear = 2017;
 	char seed[256];
 	char pass[64];
-	int year;
-	char useseed[256];
 	sprintf(seed, "(noseed)");
 
 	printf("enter seed: ");
 	if (!fgets(seed, 252, stdin)){return 0;}
 	seed[strlen(seed)-1] = 0;
-	printf("year    password (8)        passphrase (24)\n");
-	for (year=thisyear;year>=2015;year--)
+	printf("password (8)        passphrase (24)\n");
+	for (;;)
 	{
-		sprintf(useseed, "%s%i", seed, year);
-		
-		printf("%i",year);fflush(stdout);
-		
-		password_generate(pass, useseed, 8);
-		printf("    %s",pass);fflush(stdout);
-		password_generate(pass, useseed, 24);
+		password_generate(pass, seed, 8);
+		printf("%s",pass);
+		password_generate(pass, seed, 24);
 		printf("            %s\n",pass);
+		fflush(stdout);
 	}
 	return 0;
 }
