@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 void password_generate(char *pass, const char *seed, const int length);
 
