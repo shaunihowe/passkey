@@ -6,21 +6,29 @@ void password_generate(char *pass, const char *seed, const int length);
 
 int main(int argc, char *argv[])
 {
+	char master[64];
 	char seed[256];
 	char pass[64];
-	sprintf(seed, "(noseed)");
 
+	sprintf(master, "(nomaster)");
+	printf("Enter Master Password: ");
+	if (!fgets(master, 60, stdin)){return 0;}
+	master[strlen(master)-1] = 0;
+
+	sprintf(seed, "(noseed)");
 	for (;;)
 	{
-		printf("enter seed: ");
+		printf("> ");
 		if (!fgets(seed, 252, stdin)){return 0;}
 		seed[strlen(seed)-1] = 0;
-		printf("password (8)        passphrase (24)\n");
+		sprintf(seed, "%s%s", seed, master);
+		
+		printf("Password (8)      Passphrase (24)\n");
 		password_generate(pass, seed, 8);
 		printf("%s",pass);
 		password_generate(pass, seed, 24);
-		printf("            %s\n",pass);
-		fflush(stdout);
+		printf("          %s\n",pass);
+		fflush(stdout); // 
 	}
 	return 0;
 }
